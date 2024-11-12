@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار هداية</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="user-info">
+            <img id="userAvatar" src="" alt="صورة المستخدم">
+            <span id="username"></span>
+        </div>
+        
+        <div id="start-screen">
+            <h1>اختبار هداية</h1>
+            <p>لديك 40 ثانية لكل سؤال</p>
+            <button id="startBtn" class="btn">ابدأ الاختبار</button>
+        </div>
+
+        <div id="quiz-screen" style="display: none;">
+            <div class="timer">
+                الوقت المتبقي: <span id="timer">40</span> ثانية
+            </div>
+            <div id="question-container">
+                <h2 id="question-text"></h2>
+                <div id="options-container"></div>
+            </div>
+        </div>
+
+        <div id="result-screen" style="display: none;">
+            <h2>النتيجة النهائية</h2>
+            <p>نتيجتك: <span id="final-score"></span>%</p>
+            <button id="retryBtn" class="btn">إعادة المحاولة</button>
+        </div>
+    </div>
+    <script src="quiz.js"></script>
+    <script>
+    // إضافة هذا الكود في بداية الصفحة
+    fetch('/user-info')
+        .then(response => response.json())
+        .then(user => {
+            const startButton = document.getElementById('start-quiz-button'); // تأكد من إضافة هذا الـ ID لزر بدء الاختبار
+            
+            if (!user.canTakeQuiz) {
+                startButton.disabled = true;
+                startButton.textContent = `يجب الانتظار ${user.daysRemaining} يوم للاختبار القادم`;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html> 
